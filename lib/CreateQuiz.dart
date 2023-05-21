@@ -66,7 +66,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                                 Row(
                                   children: [
                                     Text(
-                                      'Test Test TestTest Test TestTest?',
+                                      controller.items[index].name,
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600),

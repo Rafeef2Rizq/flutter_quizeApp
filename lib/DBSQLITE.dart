@@ -1,13 +1,12 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
   factory DatabaseHelper() => _instance;
 
-  static late Database _database;
+  static  Database? _database; //? for accept null
 
   final String table = 'myTable';
   final String columnId = 'id';
@@ -20,35 +19,35 @@ class DatabaseHelper {
 
   DatabaseHelper.internal();
 
-  Future<Database> get database async {
-    _database = await initDatabase();
+   get database async {
+    if(_database ==null){
+ _database = await initDatabase();
+    return _database;
+    }
     return _database;
   }
 
-  Future<Database> initDatabase() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String paths = path.join(documentsDirectory.path, 'myDatabase.db');
-    return await openDatabase(
-      paths,
-      version: 1,
-      onCreate: (Database db, int version) async {
-        await db.execute(
+   initDatabase() async {
+    String databasePath = await getDatabasesPath();//method to put default database location
+    String paths = path.join(databasePath, 'doubleR.db'); //to joint path with name of database
+    Database mydb= await openDatabase(  paths, version: 1, onCreate: _onCreate );//to establish database
+    return mydb;
+  }
+  _onCreate (Database db, int version) async { //function by it we can create the database for colums
+        await db.execute( // اما اضافة التعليمات بسطر واحد او اضافة الثلاث نقاط عشان يعرفة انو بننزل اسطر
           '''
           CREATE TABLE $table (
             $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-            $columnName TEXT,
-            $columnA TEXT,
-            $columnB TEXT,
-            $columnC TEXT,
-            $columnD TEXT,
+            $columnName TEXT NOT NULL,
+            $columnA TEXT  NOT NULL,
+            $columnB TEXT  NOT NULL,
+            $columnC TEXT  NOT NULL,
+            $columnD TEXT  NOT NULL,
             $columnS TEXT
           )
           ''',
         );
-      },
-    );
-  }
-
+      }
   Future<int> insertItem(Item item) async {
     Database db = await database;
     return await db.insert(table, item.toMap());

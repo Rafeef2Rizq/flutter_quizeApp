@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(
             width: double.infinity,
           ),
-          const Image(image: AssetImage("assets/4.png",)),
+          Image.asset('images/4.png', width: 300, height: 300),
           ElevatedButton(
               onPressed: () {
                 Navigator.push(
