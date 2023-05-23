@@ -6,7 +6,7 @@ class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper.internal();
   factory DatabaseHelper() => _instance;
 
-  static  Database? _database; //? for accept null
+  static  Database? _db; //? for accept null
 
   final String table = 'myTable';
   final String columnId = 'id';
@@ -20,11 +20,11 @@ class DatabaseHelper {
   DatabaseHelper.internal();
 
    get database async {
-    if(_database ==null){
- _database = await initDatabase();
-    return _database;
+    if(_db ==null){
+ _db = await initDatabase();
+    return _db;
     }
-    return _database;
+    return _db;
   }
 
    initDatabase() async {
@@ -48,24 +48,24 @@ class DatabaseHelper {
           ''',
         );
       }
-  Future<int> insertItem(Item item) async {
+  Future<int> insertItem(Question item) async {
     Database db = await database;
     return await db.insert(table, item.toMap());
   }
 
-  Future<List<Item>> getItems() async {
-    List<Item> temp = [];
+  Future<List<Question>> questions() async {
+    List<Question> temp = [];
     Database db = await database;
     List<Map> maps = await db.query(table);
     maps.forEach((element) {
-      if(!temp.contains(Item.FromJs(element))){
-        temp.add(Item.FromJs(element));
+      if(!temp.contains(Question.FromJs(element))){
+        temp.add(Question.FromJs(element));
       }
     });
     return temp;
   }
 
-  Future<int> updateItem(Item item) async {
+  Future<int> updateItem(Question item) async {
     Database db = await database;
     return await db.update(
       table,
@@ -85,7 +85,7 @@ class DatabaseHelper {
   }
 }
 
-class Item {
+class Question {
 late int id;
 late String name;
 late String A;
@@ -93,7 +93,7 @@ late String B;
 late String C;
 late String D;
 late String S;
-  Item.FromJs(Map<dynamic,dynamic>map){
+  Question.FromJs(Map<dynamic,dynamic>map){
    this.id = map['id'];
    this.name = map['name'];
    this.A = map['A'];
@@ -102,7 +102,7 @@ late String S;
    this.S = map['S'];
    this.D = map['D'];
   }
-  Item();
+  Question();
 
   Map<String, dynamic> toMap() {
     return {

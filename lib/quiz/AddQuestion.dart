@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quize/DBSQLITE.dart';
-import 'package:quize/datagetx.dart';
+import 'package:flutterQuizeApp/sql/DBSQLITE.dart';
+import 'package:flutterQuizeApp/sql/datagetx.dart';
 
 class AddQuestion extends StatefulWidget {
   const AddQuestion({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class _AddQuestionState extends State<AddQuestion> {
         appBar: AppBar(
           title: Text('Add New Question'),
           centerTitle: true,
-          backgroundColor: Colors.greenAccent,
+          backgroundColor: Colors.teal,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -72,11 +72,11 @@ class _AddQuestionState extends State<AddQuestion> {
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 1)),
+                              BorderSide(color: Colors.teal, width: 1)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 1))),
+                              BorderSide(color: Colors.teal, width: 1))),
                 ),
                 SizedBox(
                   height: 15,
@@ -111,11 +111,11 @@ class _AddQuestionState extends State<AddQuestion> {
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1)),
+                                    color: Colors.teal, width: 1)),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1))),
+                                    color: Colors.teal, width: 1))),
                       ),
                     )
                   ],
@@ -153,11 +153,11 @@ class _AddQuestionState extends State<AddQuestion> {
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1)),
+                                    color: Colors.teal, width: 1)),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1))),
+                                    color: Colors.teal, width: 1))),
                       ),
                     )
                   ],
@@ -195,11 +195,11 @@ class _AddQuestionState extends State<AddQuestion> {
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1)),
+                                    color: Colors.teal, width: 1)),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1))),
+                                    color: Colors.teal, width: 1))),
                       ),
                     )
                   ],
@@ -237,11 +237,11 @@ class _AddQuestionState extends State<AddQuestion> {
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1)),
+                                    color: Colors.teal, width: 1)),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Colors.greenAccent, width: 1))),
+                                    color: Colors.teal, width: 1))),
                       ),
                     ),
                     SizedBox(
@@ -286,14 +286,14 @@ class _AddQuestionState extends State<AddQuestion> {
                 ElevatedButton(
                     onPressed: () async {
                       if (CheckData()) {
-                        Item object = newItem();
+                        Question object = newItem();
                         AddNewItem(controller, object);
                       } else {
                         ValedationInput(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.greenAccent,
+                        backgroundColor: Colors.teal,
                         minimumSize: Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),
@@ -335,7 +335,7 @@ class _AddQuestionState extends State<AddQuestion> {
           context: context, Message: 'Required All Answer A,B,C,D');
     }
   }
-  void AddNewItem(data controller, Item object) {
+  void AddNewItem(data controller, Question object) {
     controller.addItem(newItem: object);
     textEditingController1.text = '';
     textEditingController2.text = '';
@@ -343,8 +343,8 @@ class _AddQuestionState extends State<AddQuestion> {
     textEditingController4.text = '';
     textEditingController5.text = '';
   }
-  Item newItem() {
-    Item object = Item();
+  Question newItem() {
+    Question object = Question();
     object.name = textEditingController1.text;
     object.A = textEditingController2.text;
     object.B = textEditingController3.text;

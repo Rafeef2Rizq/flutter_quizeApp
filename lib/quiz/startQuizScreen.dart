@@ -1,18 +1,19 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:quize/datagetx.dart';
-import 'package:quize/result.dart';
+import 'package:flutterQuizeApp/sql/datagetx.dart';
+import 'package:flutterQuizeApp/result.dart';
 
-class SatrtQuiz extends StatefulWidget {
-  const SatrtQuiz({Key? key}) : super(key: key);
+class startQuizScreen extends StatefulWidget {
+  const startQuizScreen({Key? key}) : super(key: key);
 
   @override
-  State<SatrtQuiz> createState() => _SatrtQuizState();
+  State<startQuizScreen> createState() => _startQuizScreenState();
 }
 
-class _SatrtQuizState extends State<SatrtQuiz> {
+class _startQuizScreenState extends State<startQuizScreen> {
   int i = 1;
+ 
   int sum = 0;
   int page = 0;
   String ans = '';
@@ -35,15 +36,15 @@ class _SatrtQuizState extends State<SatrtQuiz> {
       appBar: AppBar(
         title: Text('Quiz App'),
         centerTitle: true,
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: Colors.teal,
       ),
       body: data.to.items.isNotEmpty
           ? Column(
               children: [
                 Text(
-                  'Question $i / ${data.to.items.length}',
+                  'Question ${page+1} / ${data.to.items.length}',
                   style: TextStyle(
-                      color: Colors.greenAccent,
+                      color: Colors.teal,
                       fontWeight: FontWeight.bold,
                       fontSize: 25),
                 ),
@@ -71,7 +72,7 @@ class _SatrtQuizState extends State<SatrtQuiz> {
                                     height: 50,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(15),
-                                        color: Colors.greenAccent
+                                        color: Colors.teal
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
@@ -106,7 +107,7 @@ class _SatrtQuizState extends State<SatrtQuiz> {
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(15),
                                           border: Border.all(
-                                              color: Colors.greenAccent
+                                              color: Colors.teal
                                           ),
                                           color: Colors.white
                                       ),
@@ -144,7 +145,7 @@ class _SatrtQuizState extends State<SatrtQuiz> {
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(15),
                                           border: Border.all(
-                                              color: Colors.greenAccent
+                                              color: Colors.teal
                                           ),
                                           color: Colors.white
                                       ),
@@ -182,7 +183,7 @@ class _SatrtQuizState extends State<SatrtQuiz> {
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(15),
                                           border: Border.all(
-                                              color: Colors.greenAccent
+                                              color: Colors.teal
                                           ),
                                           color: Colors.white
                                       ),
@@ -245,7 +246,7 @@ class _SatrtQuizState extends State<SatrtQuiz> {
                 Text(
                   'Sorry!',
                   style: TextStyle(
-                      color: Colors.greenAccent,
+                      color: Colors.teal,
                       fontWeight: FontWeight.bold,
                       fontSize: 25),
                 ),
@@ -265,7 +266,7 @@ class _SatrtQuizState extends State<SatrtQuiz> {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.greenAccent,
+                        backgroundColor: Colors.teal,
                         minimumSize: Size(160, 40),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),

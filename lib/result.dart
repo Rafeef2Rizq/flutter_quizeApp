@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quize/datagetx.dart';
+import 'package:flutterQuizeApp/sql/datagetx.dart';
 
 class result extends StatefulWidget {
   int i = 0 ;
@@ -15,15 +15,15 @@ class _resultState extends State<result> {
       appBar: AppBar(
         title: Text('Create Quiz'),
         centerTitle: true,
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: Colors.teal,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Congratations!',
+            '${widget.i>data.to.items.length/2?'Congratations!':'Sorry!'}',
             style: TextStyle(
-                color: Colors.greenAccent,
+                color: Colors.teal,
                 fontWeight: FontWeight.bold,
                 fontSize: 25),
           ),
@@ -43,7 +43,7 @@ class _resultState extends State<result> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.greenAccent,
+                  backgroundColor: Colors.teal,
                   minimumSize: Size(160, 40),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
