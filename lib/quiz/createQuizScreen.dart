@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quize/AddQuestion.dart';
-import 'package:quize/datagetx.dart';
+import 'package:flutterQuizeApp/quiz/AddQuestion.dart';
+import 'package:flutterQuizeApp/sql/datagetx.dart';
 
-class CreateQuiz extends StatefulWidget {
-  const CreateQuiz({Key? key}) : super(key: key);
+class createQuizScreen extends StatefulWidget {
+  const createQuizScreen({Key? key}) : super(key: key);
 
   @override
-  State<CreateQuiz> createState() => _CreateQuizState();
+  State<createQuizScreen> createState() => _createQuizScreenState();
 }
 
-class _CreateQuizState extends State<CreateQuiz> {
+class _createQuizScreenState extends State<createQuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Quiz'),
         centerTitle: true,
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: Colors.teal,
       ),
       body: GetBuilder<data>(
         id: 'AddQuestion',
@@ -30,7 +30,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AddQuestion(),));
                   },
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.greenAccent,
+                      backgroundColor: Colors.teal,
                       minimumSize: Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
@@ -163,7 +163,7 @@ class _CreateQuizState extends State<CreateQuiz> {
               Navigator.of(context).pop();
             },
             style: TextButton.styleFrom(
-                backgroundColor: Colors.greenAccent,
+                backgroundColor: Colors.teal,
                 minimumSize: Size(70, 40),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8))),
@@ -176,7 +176,7 @@ class _CreateQuizState extends State<CreateQuiz> {
               });
             },
             style: TextButton.styleFrom(
-                backgroundColor: Colors.greenAccent,
+                backgroundColor: Colors.teal,
                 minimumSize: Size(70, 40),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8))),

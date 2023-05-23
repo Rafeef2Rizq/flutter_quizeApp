@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:quize/DBSQLITE.dart';
+import 'package:flutterQuizeApp/sql/DBSQLITE.dart';
 
 class data extends GetxController{
   static data get to => Get.find();
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-  List<Item> items = [];
+  List<Question> items = [];
 
   @override
   void onInit() {
@@ -15,19 +15,19 @@ class data extends GetxController{
   }
 
   void refreshItemList() async {
-    List<Item> itemList = await _databaseHelper.getItems();
+    List<Question> itemList = await _databaseHelper.questions();
         items = itemList;
        update(['AddQuestion']);
    }
 
-  void addItem({required Item newItem}) async {
+  void addItem({required Question newItem}) async {
      await _databaseHelper.insertItem(newItem).then((value) {
        log('$newItem');
      });
      refreshItemList();
   }
 
-  void updateItem(Item item) async {
+  void updateItem(Question item) async {
      await _databaseHelper.updateItem(item);
     refreshItemList();
   }
