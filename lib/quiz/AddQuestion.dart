@@ -86,7 +86,7 @@ class _AddQuestionState extends State<AddQuestion> {
                 onPressed: () async {
                   if (checkData()) {
                     Question object = newItem();
-                    addNewItem(DatabaseHelper(), object);
+                    addNewItem(DatabaseLite(), object);
                   } else {
                     validationInput(context);
                   }
@@ -239,7 +239,7 @@ class _AddQuestionState extends State<AddQuestion> {
     }
   }
 
-void addNewItem(DatabaseHelper controller, Question object) async {
+void addNewItem(DatabaseLite controller, Question object) async {
     await controller.insertQuestion(
         object); // Assuming the method in DatabaseHelper is called addQuestion
     setState(() {

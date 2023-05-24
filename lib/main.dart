@@ -4,7 +4,7 @@ import 'package:flutterQuizeApp/drawerPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  DatabaseHelper().initDatabase();
+  DatabaseLite().initDatabase();
   runApp(const MyApp());
 }
 
