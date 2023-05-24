@@ -16,14 +16,14 @@ class _startQuizScreenState extends State<startQuizScreen> {
   int page = 0;
  
   late PageController pageController;
-  late DatabaseHelper dbHelper;
+  late DatabaseLite dbHelper;
    List<Question>? questions;
 
   @override
   void initState() {
     super.initState();
     pageController = PageController();
-    dbHelper = DatabaseHelper();
+    dbHelper = DatabaseLite();
     loadQuestions();
   }
 
@@ -71,7 +71,8 @@ class _startQuizScreenState extends State<startQuizScreen> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text(question.name),
+                child: Text(question.name,style: TextStyle(color: Colors.white,
+                 fontWeight: FontWeight.w600,fontSize: 20),),
               ),
             ),
             SizedBox(height: 4),
@@ -153,18 +154,37 @@ class _startQuizScreenState extends State<startQuizScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Quiz App'),backgroundColor: Colors.teal),
         body: questions!.length >= 5
-      ? Column(
+      ? Column( mainAxisAlignment: MainAxisAlignment.center,
+      
           children: [
             SizedBox(height: 8),
-            Text(
-              'Questison ${page + 1} / ${questions!.length}', // Display current page number
-             style: TextStyle(
-              
-              color: Colors.teal,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
-            ),
+            Text.rich(
+  TextSpan(
+    children: [
+      
+      TextSpan(
+        text: 'Question ${page + 1}  ',
+        style: TextStyle(
+          color: Colors.teal,
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
+        ),
+      ),
+      
+      TextSpan(
+        
+        text: ' / ${questions!.length}',
+        style: TextStyle(
+          color: Color.fromARGB(255, 28, 27, 27),
+          fontWeight: FontWeight.w400,
+          fontSize: 20,
+        ),
+      ),
+    ],
+  ),
+),
+
+      
             Expanded(
               child: PageView.builder(
                 controller: pageController,

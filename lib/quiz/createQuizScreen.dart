@@ -11,7 +11,7 @@ class createQuizScreen extends StatefulWidget {
 }
 
 class _createQuizScreenState extends State<createQuizScreen> {
-  final DatabaseHelper databaseHelper = DatabaseHelper();
+  final DatabaseLite databaseHelper = DatabaseLite();
   List<Question>? questions;
 
   @override

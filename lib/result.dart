@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutterQuizeApp/drawerPage.dart';
-
+import '../sql/DBSQLITE.dart';
 class Result extends StatefulWidget {
   int score = 0;
 
@@ -12,9 +12,30 @@ class Result extends StatefulWidget {
 }
 
 class _ResultState extends State<Result> {
+   int i = 1;
+  int sum = 0;
+  int page = 0;
+ 
+  late PageController pageController;
+  late DatabaseLite dbHelper;
+   late List<Question> questions=[];
+     void initState() {
+    super.initState();
+    pageController = PageController();
+    dbHelper = DatabaseLite();
+    loadQuestions();
+  }
+
+  Future<void> loadQuestions() async {
+    questions = await dbHelper.getQuestions();
+    setState(() {});
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
-    int totalQuestions = 5; // Total number of questions
+    // Total number of questions
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +48,7 @@ class _ResultState extends State<Result> {
         children: [
           //  Image.asset('${widget.score>totalQuestions/2?'images/1.png':'images/2.png'}'),
           Text(
-            '${widget.score > totalQuestions / 2 ? 'Congratulations!' : 'Oops!'}',
+            '${widget.score > questions.length / 2 ? 'Congratulations!' : 'Oops!'}',
             style: TextStyle(
               color: Colors.teal,
               fontWeight: FontWeight.bold,
@@ -38,10 +59,10 @@ class _ResultState extends State<Result> {
             height: 4,
           ),
           Image.asset(
-            '${widget.score > totalQuestions / 2 ? 'images/1.png' : 'images/2.png'}',
+            '${widget.score > questions.length / 2 ? 'images/1.png' : 'images/2.png'}',
           ),
           Text(
-            'Your Score: ${widget.score} / $totalQuestions',
+            'Your Score: ${widget.score} / ${questions.length}',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -49,7 +70,7 @@ class _ResultState extends State<Result> {
             ),
           ),
              Text(
-               '${widget.score > totalQuestions / 2 ? 'You\'re a superstar!' : 'Sorry,better luck next time'}',
+               '${widget.score > questions.length / 2 ? 'You\'re a superstar!' : 'Sorry,better luck next time'}',
            
             style: TextStyle(
               color: Colors.black,

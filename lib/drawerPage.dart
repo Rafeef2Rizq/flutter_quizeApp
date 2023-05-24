@@ -26,12 +26,12 @@ class _drawerPageState extends State<drawerPage> {
             const UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.teal),
                 currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.white,foregroundColor: Color.fromARGB(255, 123, 53, 180),
+                  backgroundColor: Colors.pink,foregroundColor: Colors.white,
                   child: Center(
                     child: Text(
                       'R',
                       style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -89,10 +89,13 @@ class _drawerPageState extends State<drawerPage> {
                     ));
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal,
-                 
+                  backgroundColor: const Color.fromRGBO(0, 150, 136, 1),
+                 minimumSize: Size(180, 40),
+                 shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10), 
+    ),
                  ),
-              child: const Text('Let\'s Start !'))
+              child: const Text('Let\'s Start !',style: TextStyle(fontWeight: FontWeight.w700,),))
         ],
       ),
     );

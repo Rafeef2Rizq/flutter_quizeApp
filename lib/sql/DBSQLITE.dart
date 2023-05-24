@@ -1,15 +1,14 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
-class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper.internal();
-  factory DatabaseHelper() => _instance;
+class DatabaseLite {
+  static final DatabaseLite _instance = DatabaseLite.internal();
+  factory DatabaseLite() => _instance;
 
   static Database? _database;
 
   final String table = 'myTable';
-
-  DatabaseHelper.internal();
+DatabaseLite.internal();
 
   Future<Database> get database async {
     if (_database == null) {
