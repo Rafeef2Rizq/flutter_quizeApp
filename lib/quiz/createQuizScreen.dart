@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutterQuizeApp/quiz/AddQuestion.dart';
-import 'package:flutterQuizeApp/sql/datagetx.dart';
+
+import '../sql/DBSQLITE.dart';
 
 class createQuizScreen extends StatefulWidget {
   const createQuizScreen({Key? key}) : super(key: key);
@@ -11,6 +11,23 @@ class createQuizScreen extends StatefulWidget {
 }
 
 class _createQuizScreenState extends State<createQuizScreen> {
+  final DatabaseHelper databaseHelper = DatabaseHelper();
+  List<Question>? questions;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDatabase();
+  }
+
+  Future<void> initializeDatabase() async {
+    await databaseHelper.initDatabase();
+    final List<Question> fetchedQuestions = await databaseHelper.getQuestions();
+    setState(() {
+      questions = fetchedQuestions;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,43 +36,49 @@ class _createQuizScreenState extends State<createQuizScreen> {
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: GetBuilder<data>(
-        id: 'AddQuestion',
-        builder: (controller) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-          child: Column(
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddQuestion(),));
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      minimumSize: Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'Create Quiz',
-                        style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  )),
-              SizedBox(height: 10,),
-              Expanded(
-                  child:controller.items.length!=0? ListView.separated(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddQuestion()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                
+                minimumSize: Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add),
+                  SizedBox(width: 10),
+                  Text(
+                    'Add new question',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: questions != null && questions!.isNotEmpty
+                  ? ListView.separated(
                       itemBuilder: (context, index) {
                         return Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: Colors.grey,
+                            color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Padding(
@@ -66,128 +89,143 @@ class _createQuizScreenState extends State<createQuizScreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      controller.items[index].name,
+                                      questions![index].name,
                                       style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                     Spacer(),
                                     InkWell(
-                                        onTap: () => showAlertDialog(context,controller.items[index].id.toString()),
-                                        child: Icon(Icons.delete)),
+                                      onTap: () => showAlertDialog(
+                                        context,
+                                        questions![index].id.toString(),
+                                      ),
+                                      child: Icon(Icons.delete,color: Color(0xff9E9E9E),),
+                                    ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
+                                SizedBox(height: 5),
                                 Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: controller.items[index].S == 'A'? Colors.green:Colors.white,
+                                    color: questions![index].S == 'A'
+                                        ? Colors.green
+                                        : Colors.white,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(controller.items[index].A),
+                                    child: Text(questions![index].A),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
+                                SizedBox(height: 5),
                                 Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: controller.items[index].S == 'B'? Colors.green:Colors.white,
+                                    color: questions![index].S == 'B'
+                                        ? Colors.green
+                                        : Colors.white,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(controller.items[index].B),
+                                    child: Text(questions![index].B),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
+                                SizedBox(height: 5),
                                 Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: controller.items[index].S == 'C'? Colors.green:Colors.white,
+                                    color: questions![index].S == 'C'
+                                        ? Colors.green
+                                        : Colors.white,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(controller.items[index].C),
+                                    child: Text(questions![index].C),
                                   ),
                                 ),
-
-                                SizedBox(
-                                  height: 5,
-                                ),
+                                SizedBox(height: 5),
                                 Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: controller.items[index].S ==  'D'? Colors.green:Colors.white,
+                                    color: questions![index].S == 'D'
+                                        ? Colors.green
+                                        : Colors.white,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(controller.items[index].D),
+                                    child: Text(questions![index].D),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
                         );
                       },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(
-                          height: 10,
-                        );
-                      },
-                      itemCount: controller.items.length):Center(child: Text('The question bank is empty, fill it in'
-                  ),))
-            ],
-          ),
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 10),
+                      itemCount: questions!.length,
+                    )
+                  : Center(
+                      child: Text(
+                        'No questions found.',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+            ),
+          ],
         ),
       ),
     );
   }
-  showAlertDialog(BuildContext context,String id) {
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Delete question"),
-      content: Text("Are you sure want  to delete  this question"),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            style: TextButton.styleFrom(
-                backgroundColor: Colors.teal,
-                minimumSize: Size(70, 40),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8))),
-            child: Text('cancel')),
-        TextButton(
-            onPressed: () {
-              data.to.deleteItem(int.parse(id));
-              Navigator.of(context).pop();
-              setState(() {
-              });
-            },
-            style: TextButton.styleFrom(
-                backgroundColor: Colors.teal,
-                minimumSize: Size(70, 40),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8))),
-            child: Text('Delete')),
-      ],
-    );
-    // viser dialogvinduet
-    showDialog(
+
+  Future<void> showAlertDialog(BuildContext context, String questionId) async {
+    return showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return alert;
+        return AlertDialog(
+          title: Text('delete question'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Are you sure you want to delete this question?'),
+                SizedBox(height: 10),
+             
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                // Perform delete operation using databaseHelper
+                databaseHelper.deleteQuestion(int.parse(questionId));
+                setState(() {
+                  // Refresh the questions list
+                  questions?.removeWhere(
+                      (question) => question.id.toString() == questionId);
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
       },
     );
   }

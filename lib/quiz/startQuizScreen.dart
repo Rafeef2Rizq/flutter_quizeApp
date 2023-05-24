@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutterQuizeApp/sql/datagetx.dart';
 import 'package:flutterQuizeApp/result.dart';
+
+import '../sql/DBSQLITE.dart';
 
 class startQuizScreen extends StatefulWidget {
   const startQuizScreen({Key? key}) : super(key: key);
@@ -13,233 +12,179 @@ class startQuizScreen extends StatefulWidget {
 
 class _startQuizScreenState extends State<startQuizScreen> {
   int i = 1;
- 
   int sum = 0;
   int page = 0;
-  String ans = '';
- late PageController pageController;
- @override
+ 
+  late PageController pageController;
+  late DatabaseHelper dbHelper;
+   List<Question>? questions;
+
+  @override
   void initState() {
-   pageController = PageController();
-   // TODO: implement initState
     super.initState();
+    pageController = PageController();
+    dbHelper = DatabaseHelper();
+    loadQuestions();
   }
+
   @override
   void dispose() {
-   pageController.dispose();
-   // TODO: implement dispose
+    pageController.dispose();
     super.dispose();
   }
+
+  Future<void> loadQuestions() async {
+    questions = await dbHelper.getQuestions();
+    setState(() {});
+  }
+
+  void answerSelected(String selectedOption) {
+    final currentQuestion = questions![page];
+    if (currentQuestion.S.toLowerCase() == selectedOption.toLowerCase()) {
+      sum++;
+    }
+
+    if (page + 1 == questions?.length) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Result(score: sum)),
+      );
+    } else {
+      pageController.jumpToPage(page + 1);
+    }
+  }
+
+  Widget buildQuestionPage(Question question) {
+  
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 370,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.teal,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(question.name),
+              ),
+            ),
+            SizedBox(height: 4),
+            InkWell(
+              onTap: () => answerSelected('A'),
+              child: Container(
+                width: 370,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.teal),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(question.A),
+                ),
+              ),
+            ),
+            SizedBox(height: 4),
+            InkWell(
+              onTap: () => answerSelected('B'),
+              child: Container(
+                width: 370,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.teal),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(question.B),
+                ),
+              ),
+            ),
+            SizedBox(height: 4),
+            InkWell(
+              onTap: () => answerSelected('C'),
+              child: Container(
+                width: 370,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.teal),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(question.C),
+                ),
+              ),
+            ),
+            SizedBox(height: 4),
+            InkWell(
+              onTap: () => answerSelected('D'),
+              child: Container(
+                width: 370,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.teal),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(question.D),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Quiz App'),
-        centerTitle: true,
-        backgroundColor: Colors.teal,
-      ),
-      body: data.to.items.isNotEmpty
-          ? Column(
-              children: [
-                Text(
-                  'Question ${page+1} / ${data.to.items.length}',
-                  style: TextStyle(
-                      color: Colors.teal,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 360,
-                  child: PageView(
-                    onPageChanged: (value) {
-                      setState(() {
-                        page = value;
-                      });
-                    },
-                    controller: pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      ...data.to.items.map((e) {
-                        return Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 370,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Colors.teal
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text(e.name),
-                                    ),
-                                  ),
-                                  SizedBox(height: 4,),
-                                  InkWell(
-                                    onTap: (){
-                                     if(e.S.toLowerCase()=='a'){
-                                       setState(() {
-                                         sum++;
-                                       });
-                                       if(page+1 == data.to.items.length){
-                                         log('${page-1 == data.to.items.length}');
-                                         Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                       }else{
-                                         pageController.jumpToPage(page+1);
-                                       }
-                                     }else{
-                                       if(page+1 == data.to.items.length){
-                                         log('${page-1 == data.to.items.length}');
-                                         Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                       }else{
-                                         pageController.jumpToPage(page+1);
-                                       }
-                                     }
-                                    },
-                                    child: Container(
-                                      width: 370,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(15),
-                                          border: Border.all(
-                                              color: Colors.teal
-                                          ),
-                                          color: Colors.white
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(e.A),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 4,),
-                                  InkWell(
-                                    onTap: (){
-                                      if(e.S.toLowerCase()=='b'){
-                                        setState(() {
-                                          sum++;
-                                        });
-                                        if(page+1 == data.to.items.length){
-                                          log('${page-1 == data.to.items.length}');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                        }else{
-                                          pageController.jumpToPage(page+1);
-                                        }
-                                      }else{
-                                        if(page+1 == data.to.items.length){
-                                          log('${page-1 == data.to.items.length}');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                        }else{
-                                          pageController.jumpToPage(page+1);
-                                        }
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 370,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(15),
-                                          border: Border.all(
-                                              color: Colors.teal
-                                          ),
-                                          color: Colors.white
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(e.B),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 4,),
-                                  InkWell(
-                                    onTap: (){
-                                      if(e.S.toLowerCase()=='c'){
-                                        setState(() {
-                                          sum++;
-                                        });
-                                        if(page+1 == data.to.items.length){
-                                          log('${page-1 == data.to.items.length}');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                        }else{
-                                          pageController.jumpToPage(page+1);
-                                        }
-                                      }else{
-                                        if(page+1 == data.to.items.length){
-                                          log('${page-1 == data.to.items.length}');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                        }else{
-                                          pageController.jumpToPage(page+1);
-                                        }
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 370,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(15),
-                                          border: Border.all(
-                                              color: Colors.teal
-                                          ),
-                                          color: Colors.white
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(e.C),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 4,),
-                                  InkWell(
-                                    onTap: (){
-                                      if(e.S.toLowerCase()=='d'){
-                                        setState(() {
-                                          sum++;
-                                        });
-                                        if(page+1 == data.to.items.length){
-                                          log('${page-1 == data.to.items.length}');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                        }else{
-                                          pageController.jumpToPage(page+1);
-                                        }
-                                      }else{
-                                        if(page+1 == data.to.items.length){
-                                          log('${page-1 == data.to.items.length}');
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => result(i: sum),));
-                                        }else{
-                                          pageController.jumpToPage(page+1);
-                                        }
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 370,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(15),
-                                          border: Border.all(
-                                              color: Colors.greenAccent
-                                          ),
-                                          color: Colors.white
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(e.D),
-                                      ),
-                                    ),
-                                  )
-                                ]),
-                          ),
-                        );
-                      })
-                    ],
-                  ),
-                )
-              ],
-            )
+      appBar: AppBar(title: const Text('Quiz App'),backgroundColor: Colors.teal),
+        body: questions!.length >= 5
+      ? Column(
+          children: [
+            SizedBox(height: 8),
+            Text(
+              'Questison ${page + 1} / ${questions!.length}', // Display current page number
+             style: TextStyle(
+              
+              color: Colors.teal,
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+            ),
+            ),
+            Expanded(
+              child: PageView.builder(
+                controller: pageController,
+                itemCount: questions!.length,
+                itemBuilder: (context, index) {
+                  return buildQuestionPage(questions![index]);
+                },
+                onPageChanged: (index) {
+                  setState(() {
+                    page = index; // Update the current page number
+                  });
+                },
+              ),
+            ),
+          ],
+        )
+
+            
+       
+        
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -272,7 +217,8 @@ class _startQuizScreenState extends State<startQuizScreen> {
                             borderRadius: BorderRadius.circular(8))),
                     child: Text('Back to Home'))
               ],
-            ),
+    ),
     );
   }
 }
+
