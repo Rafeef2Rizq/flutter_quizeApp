@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterQuizeApp/drawerPage.dart';
 import '../sql/DBSQLITE.dart';
+import 'package:flutterQuizeApp/sql/model.dart';
 class Result extends StatefulWidget {
   int score = 0;
 

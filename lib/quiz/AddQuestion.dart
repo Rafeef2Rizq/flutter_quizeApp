@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterQuizeApp/sql/DBSQLITE.dart';
-
+import 'package:flutterQuizeApp/sql/model.dart';
 class AddQuestion extends StatefulWidget {
   const AddQuestion({Key? key}) : super(key: key);
 
@@ -27,21 +27,12 @@ class _AddQuestionState extends State<AddQuestion> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    textEditingController1.dispose();
-    textEditingController2.dispose();
-    textEditingController3.dispose();
-    textEditingController4.dispose();
-    textEditingController5.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Question'),
+        title: Text('Add new Question'),
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
@@ -54,7 +45,7 @@ class _AddQuestionState extends State<AddQuestion> {
                 cursorColor: Colors.black,
                 controller: textEditingController1,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.question_mark, color: Colors.black),
+                  prefixIcon: Icon(Icons.question_mark, color: Colors.teal),
                   labelText: 'Question',
                   labelStyle: TextStyle(
                     fontSize: 15,
@@ -125,7 +116,7 @@ class _AddQuestionState extends State<AddQuestion> {
           child: Text(
             label,
             style: TextStyle(
-          
+          color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -141,7 +132,7 @@ class _AddQuestionState extends State<AddQuestion> {
               labelStyle: TextStyle(
                 fontSize: 15,
                 color: Colors.black,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -180,12 +171,12 @@ class _AddQuestionState extends State<AddQuestion> {
         Text('Select the correct Answer'),
         DropdownButton<String>(
           value: dropdownValue,
-          icon: const Icon(Icons.arrow_downward),
+          icon: const Icon(Icons.arrow_downward,size: 15,color: Color.fromARGB(255, 71, 70, 70)),
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
+          style: const TextStyle(color: Colors.teal),
           underline: Container(
             height: 2,
-            color: Colors.deepPurpleAccent,
+            color: Colors.teal,
           ),
           onChanged: (String? value) {
             setState(() {
@@ -241,7 +232,7 @@ class _AddQuestionState extends State<AddQuestion> {
 
 void addNewItem(DatabaseLite controller, Question object) async {
     await controller.insertQuestion(
-        object); // Assuming the method in DatabaseHelper is called addQuestion
+        object); 
     setState(() {
       textEditingController1.text = '';
       textEditingController2.text = '';

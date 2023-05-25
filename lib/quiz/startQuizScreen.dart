@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterQuizeApp/result.dart';
-
+import 'package:flutterQuizeApp/sql/model.dart';
 import '../sql/DBSQLITE.dart';
 
 class startQuizScreen extends StatefulWidget {
