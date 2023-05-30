@@ -25,7 +25,7 @@ DatabaseLite.internal();
     return mydb;
   }
 
-  void _onCreate(Database db, int version) async {
+  Future<void>  _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $table (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

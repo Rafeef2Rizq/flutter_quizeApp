@@ -9,23 +9,13 @@ class AddQuestion extends StatefulWidget {
 }
 
 class _AddQuestionState extends State<AddQuestion> {
-  late TextEditingController textEditingController1;
-  late TextEditingController textEditingController2;
-  late TextEditingController textEditingController3;
-  late TextEditingController textEditingController4;
-  late TextEditingController textEditingController5;
+  late TextEditingController textEditingController1=TextEditingController();
+  late TextEditingController textEditingController2=TextEditingController();
+  late TextEditingController textEditingController3=TextEditingController();
+  late TextEditingController textEditingController4=TextEditingController();
+  late TextEditingController textEditingController5=TextEditingController();
   List<String> list = <String>['A', 'B', 'C', 'D'];
   String dropdownValue = 'A';
-
-  @override
-  void initState() {
-    textEditingController1 = TextEditingController();
-    textEditingController2 = TextEditingController();
-    textEditingController3 = TextEditingController();
-    textEditingController4 = TextEditingController();
-    textEditingController5 = TextEditingController();
-    super.initState();
-  }
 
 
   @override
@@ -71,17 +61,23 @@ class _AddQuestionState extends State<AddQuestion> {
               SizedBox(height: 15),
               buildAnswerRow('D', textEditingController5),
               SizedBox(height: 15),
-              buildSelectCorrectAnswerRow(),
+              buildCorrectAnswer(),
               SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () async {
-                  if (checkData()) {
+                 
+                  if ( checkData()) {
+                  
                     Question object = newItem();
                     addNewItem(DatabaseLite(), object);
+                     Navigator.of(context).pushNamed("createQuiz");
+              
                   } else {
                     validationInput(context);
                   }
+                   
                 },
+                
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.teal,
                   minimumSize: Size(double.infinity, 50),
@@ -128,7 +124,7 @@ class _AddQuestionState extends State<AddQuestion> {
             controller: controller,
             cursorColor: Colors.black,
             decoration: InputDecoration(
-              labelText: '${label}th Question',
+              labelText: '${label}th Answer',
               labelStyle: TextStyle(
                 fontSize: 15,
                 color: Colors.black,
@@ -143,7 +139,7 @@ class _AddQuestionState extends State<AddQuestion> {
                 borderSide: BorderSide(color: Colors.teal, width: 1),
               ),
             ),
-          ),
+           ),
         ),
       ],
     );
@@ -164,7 +160,7 @@ class _AddQuestionState extends State<AddQuestion> {
     }
   }
 
-  Widget buildSelectCorrectAnswerRow() {
+  Widget buildCorrectAnswer() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -172,7 +168,7 @@ class _AddQuestionState extends State<AddQuestion> {
         DropdownButton<String>(
           value: dropdownValue,
           icon: const Icon(Icons.arrow_downward,size: 15,color: Color.fromARGB(255, 71, 70, 70)),
-          elevation: 16,
+          elevation: 15,
           style: const TextStyle(color: Colors.teal),
           underline: Container(
             height: 2,
@@ -196,43 +192,46 @@ class _AddQuestionState extends State<AddQuestion> {
     );
   }
 
-  void validationInput(BuildContext context) {
-    if (textEditingController1.text.isEmpty) {
-      ShowSnackBar(
-        context: context,
-        message: 'Required Question',
-      );
-    } else if (textEditingController2.text.isEmpty) {
-      ShowSnackBar(
-        context: context,
-        message: 'Required Answer A',
-      );
-    } else if (textEditingController3.text.isEmpty) {
-      ShowSnackBar(
-        context: context,
-        message: 'Required Answer B',
-      );
-    } else if (textEditingController4.text.isEmpty) {
-      ShowSnackBar(
-        context: context,
-        message: 'Required Answer C',
-      );
-    } else if (textEditingController5.text.isEmpty) {
-      ShowSnackBar(
-        context: context,
-        message: 'Required Answer D',
-      );
-    } else {
-      ShowSnackBar(
-        context: context,
-        message: 'Required All Answer A, B, C, D',
-      );
-    }
-  }
+ void validationInput(BuildContext context) {
+  if (textEditingController1.text.isEmpty) {
+    showWarning(context, 'Required Question');
+  } else if (textEditingController2.text.isEmpty) {
+    showWarning(context, 'Required Answer A');
+  } else if (textEditingController3.text.isEmpty) {
+    showWarning(context, 'Required Answer B');
+  } else if (textEditingController4.text.isEmpty) {
+    showWarning(context, 'Required Answer C');
+  } else  {
+    showWarning(context, 'Required Answer D');
+  } 
+}
+
+void showWarning(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Row(
+        children: [
+          Icon(
+            Icons.error,
+            color: Colors.white,
+          ),
+          SizedBox(width: 8),
+          Text(
+            message,
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
+
 
 void addNewItem(DatabaseLite controller, Question object) async {
     await controller.insertQuestion(
         object); 
+        
     setState(() {
       textEditingController1.text = '';
       textEditingController2.text = '';
@@ -243,16 +242,19 @@ void addNewItem(DatabaseLite controller, Question object) async {
   }
 
 
-  Question newItem() {
-    Question object = Question();
-    object.name = textEditingController1.text;
-    object.A = textEditingController2.text;
-    object.B = textEditingController3.text;
-    object.C = textEditingController4.text;
-    object.D = textEditingController5.text;
-    object.S = dropdownValue;
-    return object;
-  }
+
+Question newItem() {
+  Question object = Question(
+   
+    name: textEditingController1.text,
+    A: textEditingController2.text,
+    B: textEditingController3.text,
+    C: textEditingController4.text,
+    D: textEditingController5.text,
+    S: dropdownValue,
+  );
+  return object;
+}
 
   bool checkData() {
     return textEditingController1.text.isNotEmpty &&
@@ -260,33 +262,5 @@ void addNewItem(DatabaseLite controller, Question object) async {
         textEditingController3.text.isNotEmpty &&
         textEditingController4.text.isNotEmpty &&
         textEditingController5.text.isNotEmpty;
-  }
-
-  void ShowSnackBar({required BuildContext context, required String message}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 3),
-        dismissDirection: DismissDirection.up,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        width: 350,
-        content: Container(
-          width: double.infinity,
-          height: 40,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.grey,
-          ),
-          child: Center(
-            child: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 }
