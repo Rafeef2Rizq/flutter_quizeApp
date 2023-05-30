@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterQuizeApp/quiz/AddQuestion.dart';
 import 'package:flutterQuizeApp/sql/model.dart';
+
 import '../sql/DBSQLITE.dart';
 
 class createQuizScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class createQuizScreen extends StatefulWidget {
 }
 
 class _createQuizScreenState extends State<createQuizScreen> {
-  final DatabaseLite databaseHelper = DatabaseLite();
+  final DatabaseLite dbHelper = DatabaseLite();
   List<Question>? questions;
 
   @override
@@ -21,8 +21,8 @@ class _createQuizScreenState extends State<createQuizScreen> {
   }
 
   Future<void> initializeDatabase() async {
-    await databaseHelper.initDatabase();
-    final List<Question> fetchedQuestions = await databaseHelper.getQuestions();
+    await dbHelper.initDatabase();
+    final List<Question> fetchedQuestions = await dbHelper.getQuestions();
     setState(() {
       questions = fetchedQuestions;
     });
@@ -42,10 +42,7 @@ class _createQuizScreenState extends State<createQuizScreen> {
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddQuestion()),
-                );
+                Navigator.of(context).pushNamed("Add");
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal,
@@ -97,7 +94,7 @@ class _createQuizScreenState extends State<createQuizScreen> {
                                       ),
                                     ),
                                     Spacer(),
-                                    InkWell(
+                                    InkWell( //custom button
                                       onTap: () => showAlertDialog(
                                         context,
                                         questions![index].id.toString(),
@@ -188,7 +185,7 @@ class _createQuizScreenState extends State<createQuizScreen> {
   }
 
   Future<void> showAlertDialog(BuildContext context, String questionId) async {
-    return showDialog<void>(
+    return await showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -215,7 +212,7 @@ class _createQuizScreenState extends State<createQuizScreen> {
               child: Text('Delete'),
               onPressed: () {
                 // Perform delete operation using databaseHelper
-                databaseHelper.deleteQuestion(int.parse(questionId));
+                dbHelper.deleteQuestion(int.parse(questionId));
                 setState(() {
                   // Refresh the questions list
                   questions?.removeWhere(

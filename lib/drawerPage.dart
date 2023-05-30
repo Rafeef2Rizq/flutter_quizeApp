@@ -1,7 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:flutterQuizeApp/quiz/createQuizScreen.dart';
-import 'package:flutterQuizeApp/quiz/startQuizScreen.dart';
+
 
 class drawerPage extends StatefulWidget {
   const drawerPage({Key? key}) : super(key: key);
@@ -41,25 +40,20 @@ class _drawerPageState extends State<drawerPage> {
                leading: Icon(Icons.edit),
               title: Text('Create Quiz'),
               onTap: () {
-                Navigator.push( context, //push mean "انتقل"
-                    MaterialPageRoute( // because there is no root it is used to make root
-                      builder: (context) {
-                        return createQuizScreen();
-                      },
-                    ));
+                  Navigator.of(context).pushNamed("createQuiz");
+                // Navigator.push( context, //push mean "انتقل"
+                //     MaterialPageRoute( // because there is no root it is used to make root
+                //       builder: (context) {
+                //         return createQuizScreen();
+                //       },
+                //     ));
               },
             ),
             ListTile(
                leading: Icon(Icons.quiz_sharp),
               title: Text('Start Quiz'),
               
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return startQuizScreen();
-                    },
-                  )),
+              onTap: () =>  Navigator.of(context).pushNamed("StartQuiz"),
              
             ),
             Divider(),
@@ -80,13 +74,7 @@ class _drawerPageState extends State<drawerPage> {
           Image.asset('images/home.png', width: 350, height: 350),
           ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return startQuizScreen();
-                      },
-                    ));
+               Navigator.of(context).pushNamed("StartQuiz");
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(0, 150, 136, 1),

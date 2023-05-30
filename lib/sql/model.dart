@@ -16,8 +16,16 @@ class Question {
     this.S = map['S'];
     this.D = map['D'];
   }
+ Question({
 
-  Question();
+    required this.name,
+    required this.A,
+    required this.B,
+    required this.C,
+    required this.D,
+    required this.S,
+  });
+  // Question(int i);
 
   Map<String, dynamic> toMap() {
     return {
