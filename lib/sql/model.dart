@@ -7,7 +7,7 @@ class Question {
   late String D;
   late String S;
 
-  Question.fromMap(Map<String, dynamic> map) {
+  Question. fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
     this.name = map['name'];
     this.A = map['A'];

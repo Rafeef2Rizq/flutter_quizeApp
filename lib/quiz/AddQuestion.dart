@@ -70,7 +70,7 @@ class _AddQuestionState extends State<AddQuestion> {
                   
                     Question object = newItem();
                     addNewItem(DatabaseLite(), object);
-                     Navigator.of(context).pushNamed("createQuiz");
+                    //  Navigator.of(context).pushNamed("createQuiz");
               
                   } else {
                     validationInput(context);
