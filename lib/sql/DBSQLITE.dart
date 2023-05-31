@@ -49,23 +49,14 @@ DatabaseLite.internal();
     Database db = await database;
     List<Map<String, dynamic>> maps = await db.query(table);
     maps.forEach((element) {
-      if (!temp.contains(Question.fromMap(element))) {
+      if (!temp.contains(Question.fromMap(element))) { 
         temp.add(Question.fromMap(element));
       }
     });
     return temp;
   }
 
-  Future<int> updateQuestion(Question item) async {
-    Database db = await database;
-    return await db.update(
-      table,
-      item.toMap(),
-      where: 'id = ?',
-      whereArgs: [item.id],
-    );
-  }
-
+  
   Future<int> deleteQuestion(int id) async {
     Database db = await database;
     return await db.delete(

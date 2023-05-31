@@ -11,7 +11,7 @@ class startQuizScreen extends StatefulWidget {
 }
 
 class _startQuizScreenState extends State<startQuizScreen> {
-  int i = 1;
+
   int sum = 0;
   int page = 0;
  
